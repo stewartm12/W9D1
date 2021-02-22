@@ -28,13 +28,11 @@ function restSum(...args) {
   let arr = args;
 
   let sum = arr.reduce((acc, ele) => {
-        return acc + ele;
-      })
-    ;
-    return sum;
+    return acc + ele;
+  });
+  return sum;
 }
 // console.log(restSum(1, 2, 3))
-
 
 // Function.prototype.myBind = function(...args) {
 //   debugger
@@ -58,10 +56,10 @@ function restSum(...args) {
 Function.prototype.myBind = function (ctx, ...args) {
   let that = this;
 
-  return function(...moreArgs) {
+  return function (...moreArgs) {
     return that.apply(ctx, args.concat(moreArgs));
-  }
-}
+  };
+};
 /////////////////////////////////////////////////////
 class Cat {
   constructor(name) {
@@ -83,7 +81,7 @@ class Dog {
 const markov = new Cat("Markov");
 const pavlov = new Dog("Pavlov");
 
-// markov.says("meow", "Ned");
+markov.says("meow", "Ned");
 // Markov says meow to Ned!
 // true
 
@@ -93,7 +91,8 @@ markov.says.myBind(pavlov, "meow", "Kush")();
 // // true
 
 // // no bind time args (other than context), call time args are "meow" and "a tree"
-markov.says.myBind(pavlov)("meow", "a tree");
+let demo1 = markov.says.myBind(pavlov);
+demo1("meow", "a tree");
 // // Pavlov says meow to a tree!
 // // true
 
@@ -107,3 +106,63 @@ const notMarkovSays = markov.says.myBind(pavlov);
 notMarkovSays("meow", "me");
 // // Pavlov says meow to me!
 // // true
+
+function curriedSum(numArgs) {
+  let numbers = [];
+
+  return function _curriedSum(num) {
+    numbers.push(num);
+    if (numbers.length === numArgs) {
+      let result = numbers.reduce((acc, ele) => {
+        return acc + ele;
+      });
+      return result;
+    } else {
+      return _curriedSum;
+    }
+  };
+}
+
+// const sum = curriedSum(4);
+// console.log(sum(5)(30)(20)(1));
+
+// Function.prototype.curry = function (numArgs) {
+//   let numbers = [];
+//   let that = this;
+
+//   return function _curry(num) {
+//     numbers.push(num);
+//     if (numbers.length === numArgs) {
+//       // debugger;
+//       return that();
+//     } else {
+//       return _curry;
+//     }
+//   };
+// };
+
+Function.prototype.curry = function (numArgs) {
+  let numbers = [];
+  let that = this;
+
+  return function _curry(num) {
+    numbers.push(num);
+    if (numbers.length === numArgs) {
+      // debugger;
+      return that.apply(null, numbers);
+    } else {
+      return _curry;
+    }
+  };
+};
+
+// function something(arg1, ...args) {
+//   console.log(arg1);
+//   console.log(arg2);
+//   console.log(arg3);
+//   console.log(arg4);
+//   console.log(arg5);
+//   // console.log(more);
+// }
+
+// something.curry(5)(1)(2)(2)(2)(2);
