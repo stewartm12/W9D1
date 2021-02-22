@@ -1,26 +1,25 @@
-function madLib(s1, s2, s3) {
-  return `We shall ${s1.toUpperCase()} the ${s2.toUpperCase()} ${s3.toUpperCase()}`
+function Mysum(num1) {
+  return function (num2) {
+    return function (num3) {
+      return num1 + num2 + num3;
+    };
+  };
+}
+// console.log(sum(2)(3)(1));
+
+function betterSum() {
+  let sum = [];
+  return function add(num) {
+    sum.push(num);
+    console.log(
+      sum.reduce((acc, ele) => {
+        return acc + ele;
+      })
+    );
+    return add;
+  };
 }
 
-// console.log(madLib('make', 'best', 'guac'));
-
-function isSubString(searchString, subString) {
-  return searchString.includes(subString);
-}
-
-// console.log(isSubString("Jump for joy", "joys"));
-
-function fizzBuzz(array) {
-  let newArr = [];
-
-  array.forEach(ele => {
-    if (ele % 3 === 0 ^ ele % 5 === 0) {
-      newArr.push(ele);
-    }
-  });
-
-  return newArr;
-}
-
-// console.log(fizzBuzz([1, 2, 3, 5,15]));
-
+betterSum()(2)(3)(1);
+console.log(sum);
+// console.log(sum(2)(3)(1));
